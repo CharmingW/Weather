@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_air_quality"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.charming.weather.activity.AirQualityActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="?attr/actionModeShareDrawable"
+        android:id="@+id/btn_share"
+        android:layout_gravity="end|center_vertical"
+        android:layout_marginTop="@dimen/common_xxl_spacing"
+        android:layout_marginEnd="@dimen/common_xl_spacing"/>
+
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="TextView"
+        android:textSize="@dimen/xxl_text_size"/>
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/common_xs_spacing"
+        android:text="全球天气网发布"
+        android:textSize="@dimen/s_text_size"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_xxl_spacing"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <com.charming.weather.ui.AirQualityView
+            android:id="@+id/air_quality_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+
+        <TextView
+            android:id="@+id/air_quality"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/common_xxl_spacing"
+            android:text="良"
+            android:textSize="@dimen/xxl_text_size"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/common_xxxl_spacing"
+        android:layout_marginStart="@dimen/common_xxxxl_spacing"
+        android:layout_marginTop="@dimen/common_xxl_spacing"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PM2.5"
+                android:textColor="@color/black_gray"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_s_spacing"
+                android:text="NO₂"
+                android:textColor="@color/black_gray"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_s_spacing"
+                android:text="CO"
+                android:textColor="@color/black_gray"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/pm25"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/no2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_s_spacing"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/co"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_s_spacing"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="PM10"
+                android:textColor="@color/black_gray"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_s_spacing"
+                android:text="SO₂"
+                android:textColor="@color/black_gray"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_s_spacing"
+                android:text="O₃"
+                android:textColor="@color/black_gray"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/pm10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/so2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_s_spacing"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/o3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/common_s_spacing"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_xxxxl_spacing"
+        android:layout_marginTop="@dimen/common_s_spacing"
+        android:text="单位：ug/m³"/>
+</LinearLayout>

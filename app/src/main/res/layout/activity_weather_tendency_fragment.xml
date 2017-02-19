@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_weather_tendency_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.charming.weather.activity.WeatherDetailsFragmentActivity"
+    android:background="@color/background">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/common_xxl_spacing"
+        android:text="@string/weather_tendency_forecast_text"
+        android:textColor="@color/black"
+        android:textSize="@dimen/xxl_text_size"/>
+
+    <TextView
+        android:id="@+id/weather_forecast_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/black_gray"
+        android:textSize="@dimen/s_text_size"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/weather_tendency_page"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:layout_marginTop="@dimen/common_xl_spacing"/>
+
+    <LinearLayout
+        android:id="@+id/daily_date"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_news_details"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.charming.weather.activity.NewsDetailsActivity">
+
+    <include
+        layout="@layout/activity_news_details_title_bar"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/s_divider"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <WebView
+            android:id="@+id/news_webpage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ProgressBar
+            android:progressDrawable="@drawable/progressbar"
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_gravity="top"
+            android:max="100"
+            android:maxHeight="3dp"
+            />
+    </FrameLayout>
+
+</LinearLayout>

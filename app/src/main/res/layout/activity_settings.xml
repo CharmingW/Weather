@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/activity_settings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@drawable/s_divider"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        tools:context="com.charming.weather.activity.SettingsActivity">
+
+        <include layout="@layout/common_title_bar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@drawable/root_ll_vertical_divider"
+            android:orientation="vertical"
+            android:showDividers="beginning|middle">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@drawable/s_divider"
+                android:orientation="vertical"
+                android:paddingEnd="@dimen/common_l_spacing"
+                android:paddingStart="@dimen/common_l_spacing"
+                android:showDividers="middle">
+
+                <include layout="@layout/item_settings"/>
+
+                <include layout="@layout/item_settings"/>
+
+                <include layout="@layout/item_settings"/>
+
+                <include layout="@layout/item_settings"/>
+
+                <include layout="@layout/item_settings"/>
+
+                <include layout="@layout/item_settings"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:divider="@drawable/s_divider"
+                android:orientation="vertical"
+                android:paddingEnd="@dimen/common_l_spacing"
+                android:paddingStart="@dimen/common_l_spacing"
+                android:showDividers="middle">
+
+                <include layout="@layout/item_settings"/>
+
+                <include layout="@layout/item_settings"/>
+
+                <include layout="@layout/item_settings"/>
+
+                <include layout="@layout/item_settings"/>
+
+                <include layout="@layout/item_settings"/>
+
+                <include layout="@layout/item_settings"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/refresh"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/darker_gray">
+
+    <ImageView
+        android:layout_width="@dimen/common_xxxxl_spacing"
+        android:layout_height="@dimen/common_xxxxl_spacing"
+        app:srcCompat="@drawable/ic_refresh"
+        android:layout_centerInParent="true"
+        android:id="@+id/imageView"
+        />
+
+    <TextView
+        android:text="@string/error_refresh_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="29dp"
+        android:id="@+id/textView3"
+        android:textSize="@dimen/l_text_size"
+        android:textColor="@color/black_gray"/>
+</RelativeLayout>

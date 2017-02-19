@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_weather_overview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.charming.weather.activity.WeatherOverviewActivity">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/weather_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.charming.weather.ui.ObservableScrollView
+                android:id="@+id/sv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/background"
+                    android:divider="@drawable/root_ll_vertical_divider"
+                    android:orientation="vertical"
+                    android:showDividers="middle"
+                    >
+
+                    <!--当天预览和未来趋势-->
+                    <LinearLayout
+                        style="@style/overview_linear_child">
+
+                        <RelativeLayout
+                            android:id="@+id/rl"
+                            android:layout_width="match_parent"
+                            android:layout_height="360dp"
+                            android:background="@color/colorPrimaryDark">
+
+                            <TextView
+                                android:id="@+id/degree"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginStart="27dp"
+                                android:layout_marginTop="40dp"
+                                android:textColor="@android:color/white"
+                                android:textSize="60sp"/>
+
+                            <TextView
+                                android:id="@+id/location_weather_type"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignLeft="@+id/degree"
+                                android:layout_below="@+id/degree"
+                                android:textColor="@android:color/white"/>
+
+                            <FrameLayout
+                                android:id="@+id/btn_menu"
+                                style="@style/btn_menu_size"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginEnd="@dimen/common_s_spacing"
+                                android:layout_marginTop="@dimen/common_xl_spacing">
+
+                                <ImageView
+                                    android:layout_width="@dimen/menu_icon_size"
+                                    android:layout_height="@dimen/menu_icon_size"
+                                    android:layout_gravity="center"
+                                    android:src="@drawable/ic_menu"/>
+
+                            </FrameLayout>
+
+                            <LinearLayout
+                                android:id="@+id/weather_type_value"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentStart="true"
+                                android:divider="@drawable/ll_vertical_light_divider"
+                                android:orientation="horizontal"
+                                android:paddingBottom="20dp"
+                                android:showDividers="middle">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:id="@+id/wind_direction"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:textColor="@android:color/white"/>
+
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        >
+
+                                        <TextView
+                                            android:id="@+id/wind_level"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerInParent="true"
+                                            android:textColor="@android:color/white"
+                                            android:textSize="@dimen/xxl_text_size"/>
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignBottom="@id/wind_level"
+                                            android:layout_gravity="bottom"
+                                            android:layout_toEndOf="@id/wind_level"
+                                            android:text="级"
+                                            android:textColor="@android:color/white"
+                                            android:textSize="@dimen/m_text_size"/>
+                                    </RelativeLayout>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical"
+                                    >
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:text="@string/relative_humidity_text"
+                                        android:textColor="@android:color/white"
+                                        />
+
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        >
+
+                                        <TextView
+                                            android:id="@+id/relative_humidity_value"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerInParent="true"
+                                            android:textColor="@android:color/white"
+                                            android:textSize="30sp"/>
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignBottom="@id/relative_humidity_value"
+                                            android:layout_toEndOf="@id/relative_humidity_value"
+                                            android:text="%"
+                                            android:textColor="@android:color/white"
+                                            android:textSize="@dimen/m_text_size"/>
+
+                                    </RelativeLayout>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="center"
+                                        android:text="@string/rainfall_text"
+                                        android:textColor="@android:color/white"
+                                        />
+
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1">
+
+                                        <TextView
+                                            android:id="@+id/rainfall_value"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerInParent="true"
+                                            android:textColor="@android:color/white"
+                                            android:textSize="30sp"/>
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignBottom="@id/rainfall_value"
+                                            android:layout_gravity="bottom"
+                                            android:layout_toEndOf="@id/rainfall_value"
+                                            android:text="mm"
+                                            android:textColor="@android:color/white"
+                                            android:textSize="@dimen/m_text_size"/>
+
+                                    </RelativeLayout>
+
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/air_pressure"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignLeft="@+id/sendible_temperature"
+                                android:layout_below="@+id/sendible_temperature"
+                                android:layout_marginTop="@dimen/common_xs_spacing"
+                                android:textColor="@android:color/white"/>
+
+                            <TextView
+                                android:id="@+id/visibility"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignLeft="@+id/sendible_temperature"
+                                android:layout_below="@+id/air_pressure"
+                                android:layout_marginTop="@dimen/common_xs_spacing"
+                                android:textColor="@android:color/white"/>
+
+                            <TextView
+                                android:id="@+id/wind_degree"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignLeft="@+id/sendible_temperature"
+                                android:layout_below="@+id/visibility"
+                                android:layout_marginTop="@dimen/common_xs_spacing"
+                                android:textColor="@android:color/white"/>
+
+                            <TextView
+                                android:id="@+id/wind_speed"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignLeft="@+id/sendible_temperature"
+                                android:layout_below="@+id/wind_degree"
+                                android:layout_marginTop="@dimen/common_xs_spacing"
+                                android:textColor="@android:color/white"/>
+
+                            <TextView
+                                android:id="@+id/sendible_temperature"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignLeft="@+id/degree"
+                                android:layout_below="@+id/location_weather_type"
+                                android:layout_marginTop="@dimen/common_xs_spacing"
+                                android:textColor="@android:color/white"/>
+
+                            <ImageView
+                                android:id="@+id/weather_l_icon"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:layout_alignBottom="@+id/visibility"
+                                android:layout_toStartOf="@+id/btn_menu"
+                                app:srcCompat="@drawable/ic_cloudy"/>
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/future_weather_overview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_selector"
+                            android:clickable="true"
+                            android:divider="@drawable/daily_weather_divider"
+                            android:orientation="vertical"
+                            android:showDividers="middle"
+                            >
+
+                            <include
+                                android:id="@+id/weather_details_item1"
+                                layout="@layout/common_item_daily_weather"
+                                />
+
+                            <include
+                                android:id="@+id/weather_details_item2"
+                                layout="@layout/common_item_daily_weather"/>
+
+                            <include
+                                android:id="@+id/weather_details_item3"
+                                layout="@layout/common_item_daily_weather"
+                                />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/weather_tendency_entrance"
+                            style="@style/common_item_details_entrance"
+                            android:background="@drawable/background_selector"
+                            android:text="@string/weather_tendency_entrance_text"/>
+
+                    </LinearLayout>
+
+                    <!--24小时预报-->
+                    <LinearLayout
+                        style="@style/overview_linear_child">
+
+                        <TextView
+                            style="@style/common_tips_title"
+                            android:text="@string/all_day_weather_tendency_title_text"/>
+
+                        <include layout="@layout/all_day_weather_tendency"/>
+                    </LinearLayout>
+
+                    <!--空气质量-->
+                    <LinearLayout
+                        android:id="@+id/ll_air_quality"
+                        style="@style/overview_linear_child">
+
+                        <TextView
+                            android:id="@+id/air_quality_title"
+                            style="@style/common_tips_title"
+                            android:text="@string/air_quality_text"/>
+
+                        <LinearLayout
+                            android:id="@+id/air_quality"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_selector"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingBottom="@dimen/common_xl_spacing"
+                            android:paddingTop="@dimen/common_xl_spacing">
+
+                            <com.charming.weather.ui.AirQualityView
+                                android:id="@+id/air_quality_index"
+                                android:layout_width="wrap_content"
+                                android:layout_marginEnd="@dimen/common_xl_spacing"
+                                android:layout_height="wrap_content"/>
+
+                            <com.charming.weather.ui.AirQualityView
+                                android:id="@+id/primary_pollutant"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/common_xl_spacing"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/air_quality_details_entrance"
+                            style="@style/common_item_details_entrance"
+                            android:background="@drawable/background_selector"
+                            android:text="@string/air_quality_details_text"/>
+
+                    </LinearLayout>
+
+                    <!--舒适度指数-->
+                    <LinearLayout
+                        android:id="@+id/comfortable_tips"
+                        style="@style/overview_linear_child"
+                        >
+
+                        <TextView
+                            style="@style/common_tips_title"
+                            android:text="@string/comfortable_index_text"/>
+
+                        <LinearLayout
+                            style="@style/item_activity_tips"
+                            >
+
+                            <include
+                                layout="@layout/common_item_activity_tips"
+                                />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!--穿衣指数-->
+                    <LinearLayout
+                        android:id="@+id/dress_tips"
+                        style="@style/overview_linear_child">
+
+                        <TextView
+                            style="@style/common_tips_title"
+                            android:text="@string/dress_index_text"/>
+
+                        <LinearLayout
+                            style="@style/item_activity_tips"
+                            >
+
+                            <include
+                                layout="@layout/common_item_activity_tips"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!--感冒指数-->
+                    <LinearLayout
+                        android:id="@+id/cold_tips"
+                        style="@style/overview_linear_child">
+
+                        <TextView
+                            style="@style/common_tips_title"
+                            android:text="@string/cold_index_text"/>
+
+                        <LinearLayout
+                            style="@style/item_activity_tips"
+                            >
+
+                            <include
+                                layout="@layout/common_item_activity_tips"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!--紫外线指数-->
+                    <LinearLayout
+                        android:id="@+id/ultraviolet_tips"
+                        style="@style/overview_linear_child">
+
+                        <TextView
+                            style="@style/common_tips_title"
+                            android:text="@string/ultraviolet_index_text"/>
+
+                        <LinearLayout
+                            style="@style/item_activity_tips"
+                            >
+
+                            <include
+                                layout="@layout/common_item_activity_tips"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!--运动指数-->
+                    <LinearLayout
+                        android:id="@+id/exercise_tips"
+                        style="@style/overview_linear_child">
+
+                        <TextView
+                            style="@style/common_tips_title"
+                            android:text="@string/tips_exercise_text"/>
+
+                        <LinearLayout
+                            style="@style/item_activity_tips"
+                            >
+
+                            <include
+                                layout="@layout/common_item_activity_tips"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!--旅游指数-->
+                    <LinearLayout
+                        android:id="@+id/travel_tips"
+                        style="@style/overview_linear_child">
+
+                        <TextView
+                            style="@style/common_tips_title"
+                            android:text="@string/tips_travel_text"/>
+
+                        <LinearLayout
+                            style="@style/item_activity_tips"
+                            >
+
+                            <include
+                                layout="@layout/common_item_activity_tips"/>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!--洗车指数-->
+                    <LinearLayout
+                        android:id="@+id/wash_car_tips"
+                        style="@style/overview_linear_child">
+
+                        <TextView
+                            style="@style/common_tips_title"
+                            android:text="@string/tips_wash_car_text"/>
+
+                        <LinearLayout
+                            style="@style/item_activity_tips"
+                            >
+
+                            <include
+                                layout="@layout/common_item_activity_tips"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <include layout="@layout/activity_foot"/>
+
+                </LinearLayout>
+
+            </com.charming.weather.ui.ObservableScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+        <include layout="@layout/title_overview_activity"/>
+    </FrameLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nv_menu"
+        android:layout_width="360dp"
+        android:layout_height="306dp"
+        android:layout_gravity="end"
+        app:headerLayout="@layout/sliding_menu"
+        android:fitsSystemWindows="true"
+        android:clipToPadding="false"
+        android:background="@android:color/transparent"/>
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/activity_welcome"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@drawable/welcome"-->
+        <!--tools:context="com.charming.weather.activity.WelcomeActivity">-->
+
+        <!--<com.charming.weather.ui.LedTextView-->
+            <!--android:gravity="center"-->
+            <!--android:background="@drawable/skip_bg"-->
+            <!--android:id="@+id/welcome_image"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/welcome"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:textSize="@dimen/xxl_text_size"/>-->
+
+    <!--</FrameLayout>-->
+
+</android.support.v4.widget.DrawerLayout>

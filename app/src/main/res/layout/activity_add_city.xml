@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                 android:id="@+id/title_bar"
+                 android:layout_width="match_parent"
+                 android:layout_height="@dimen/multi_title_status_bar_height"
+                 android:background="@color/lighter_gray"
+                 android:paddingTop="@dimen/status_bar_height">
+
+
+        <LinearLayout
+            android:id="@+id/back_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/btn_back"
+                style="@style/btn_menu_size"
+                >
+
+                <ImageView
+                    android:id="@+id/back_icon"
+                    android:layout_width="@dimen/menu_icon_size"
+                    android:layout_height="@dimen/menu_icon_size"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_back"/>
+            </FrameLayout>
+
+
+            <TextView
+                android:id="@+id/title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/edit_city_text"
+                android:textColor="@color/black_gray"/>
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:visibility="gone"
+            android:id="@+id/btn_cancel_layout"
+            style="@style/btn_menu_size"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/common_m_spacing"
+            >
+            <TextView
+                android:gravity="center"
+                android:id="@+id/btn_cancel"
+                android:layout_width="48dp"
+                android:layout_height="@dimen/common_xl_spacing"
+                android:background="@drawable/btn_shape"
+                android:src="@drawable/ic_menu_dark"
+                android:text="@string/cancel_text"
+                android:textColor="@color/black_gray"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btn_edit_layout"
+            style="@style/btn_menu_size"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="@dimen/common_m_spacing"
+            >
+            <TextView
+                android:gravity="center"
+                android:id="@+id/btn_edit"
+                android:layout_width="48dp"
+                android:layout_height="@dimen/common_xl_spacing"
+                android:background="@drawable/btn_shape"
+                android:src="@drawable/ic_menu_dark"
+                android:text="@string/edit_text"
+                android:textColor="@color/black_gray"
+                android:layout_gravity="center"/>
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/title_bar_divider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@drawable/s_divider"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:scrollbars="none"
+            android:id="@+id/city_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/common_l_spacing"
+            android:paddingEnd="@dimen/common_l_spacing"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btn_add"
+            android:layout_width="@dimen/btn_menu_size"
+            android:layout_height="@dimen/btn_menu_size"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/common_xxl_spacing"
+            android:background="@drawable/btn_circle"
+            android:src="@drawable/ic_add"/>
+    </FrameLayout>
+
+
+</LinearLayout>

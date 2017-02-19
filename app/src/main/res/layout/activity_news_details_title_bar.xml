@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="@dimen/multi_title_status_bar_height"
+             android:background="@color/lighter_gray"
+             android:paddingTop="@dimen/status_bar_height">
+
+
+    <FrameLayout
+        android:id="@+id/btn_news_details_back"
+        style="@style/btn_menu_size">
+
+        <ImageView
+            android:layout_width="@dimen/menu_icon_size"
+            android:layout_height="@dimen/menu_icon_size"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_back"/>
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/btn_news_details_menu"
+        style="@style/btn_menu_size"
+        android:layout_gravity="bottom|end">
+
+        <ImageView
+            android:layout_width="@dimen/menu_icon_size"
+            android:layout_height="@dimen/menu_icon_size"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_menu_dark"/>
+    </FrameLayout>
+
+
+</FrameLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:paddingBottom="@dimen/common_m_spacing"
+              android:paddingTop="@dimen/common_m_spacing">
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2">
+
+        <ImageView
+
+            android:id="@+id/tips_icon"
+            android:layout_width="@dimen/item_icon_size"
+            android:layout_height="@dimen/item_icon_size"
+            app:srcCompat="@drawable/ic_umbrella"
+            android:layout_gravity="center_vertical"/>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="8"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/common_m_spacing">
+
+        <TextView
+            android:id="@+id/tips_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/l_text_size"/>
+
+        <TextView
+            android:id="@+id/tips_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/darker_gray"
+            android:textSize="@dimen/s_text_size"
+            />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:layout_width="@dimen/menu_icon_size"
+            android:layout_height="@dimen/menu_icon_size"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_enter"
+            android:layout_gravity="right"/>
+    </FrameLayout>
+
+
+</LinearLayout>

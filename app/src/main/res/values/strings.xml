@@ -1,0 +1,64 @@
+<resources>
+    <!--weather-->
+    <string name="app_name">Weather</string>
+    <string name="city_text">广州</string>
+    <string name="weather_type_text">大雨</string>
+    <string name="today_text">今天</string>
+    <string name="tomorrow_text">明天</string>
+    <string name="the_day_after_tomorrow_text">后天</string>
+    <string name="weather_icon_description_text">weather type icon</string>
+    <string name="weather_tendency_entrance_text">15天趋势预报</string>
+    <string name="all_day_weather_tendency_title_text">24小时预报</string>
+    <string name="air_quality_text">空气质量</string>
+    <string name="air_quality_details_text">空气质量详情</string>
+    <string name="air_quality_index_text">空气质量指数</string>
+    <string name="primary_pollutant_text">首要污染物</string>
+    <string name="relative_humidity_text">相对湿度</string>
+
+
+    <!--menu-->
+    <string name="close_menu_icon_text">×</string>
+    <string name="add_or_delete_city_text">添加 / 删除城市</string>
+    <string name="share_weather_text">分享天气</string>
+    <string name="settings_text">设置</string>
+
+    <!--network-->
+    <string name="no_network_text">无网络连接，请检查网络</string>
+    <string name="no_data_text">无数据可用，请确认已连接到网络</string>
+    <string name="host_error_text">服务器出错啦，请稍后再试</string>
+    <string name="tips_foot">哥，这次真的没有了o((≧▽≦o)</string>
+    <string name="refresh_success">更新成功</string>
+    <string name="no_update">当前已是最新</string>
+
+    <!---->
+    <string name="air_quality_index_en_text">AQI</string>
+    <string name="primary_pollutant_en_text">PM10</string>
+    <string name="rainfall_text">降水量</string>
+    <string name="pm_25_text">PM2.5</string>
+    <string name="wind_level_text">风力</string>
+    <string name="wind_dir_text">风向</string>
+    <string name="wind_speed_text">风速</string>
+    <string name="sun_rise_set_text">日出/日落</string>
+    <string name="tips_travel_text">出行指数</string>
+    <string name="tips_exercise_text">运动指数</string>
+    <string name="tips_wash_car_text">洗车指数</string>
+    <string name="comfortable_index_text">舒适度指数</string>
+    <string name="dress_index_text">穿衣指数</string>
+    <string name="cold_index_text">感冒指数</string>
+    <string name="ultraviolet_index_text">紫外线指数</string>
+    <string name="sendible_temperature_text">体感温度</string>
+    <string name="air_pressure_text">气压</string>
+    <string name="visibility_text">能见度</string>
+    <string name="wind_degree_text">风向</string>
+    <string name="weather_tendency_forecast_text">7天趋势预报</string>
+    <string name="rainfall_probability_text">降水概率</string>
+    <string name="common_date_format">MM月dd日 HH:mm</string>
+    <string name="edit_text">编辑</string>
+    <string name="edit_city_text">编辑城市</string>
+    <string name="cancel_text">取消</string>
+    <string name="sure_text">确定</string>
+    <string name="error_refresh_text">出错啦，请点击刷新</string>
+    <string name="share_target_text">分享天气到</string>
+
+
+</resources>

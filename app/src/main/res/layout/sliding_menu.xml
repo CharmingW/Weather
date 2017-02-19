@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/colorPrimaryDark"
+              android:divider="@drawable/s_divider_white"
+              android:orientation="vertical"
+              android:paddingLeft="@dimen/common_l_spacing"
+              android:paddingRight="@dimen/common_l_spacing"
+              android:paddingTop="@dimen/common_l_spacing"
+              android:showDividers="middle">
+
+    <TextView
+        android:id="@+id/close"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_selector_menu"
+        android:gravity="center"
+        android:paddingBottom="@dimen/common_s_spacing"
+        android:paddingTop="@dimen/common_s_spacing"
+        android:text="@string/close_menu_icon_text"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"/>
+
+
+    <TextView
+        android:id="@+id/add_or_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_selector_menu"
+        android:gravity="center"
+        android:paddingBottom="@dimen/common_l_spacing"
+        android:paddingTop="@dimen/common_l_spacing"
+        android:text="@string/add_or_delete_city_text"
+        android:textColor="@android:color/white"/>
+
+
+    <TextView
+        android:id="@+id/share"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_selector_menu"
+        android:gravity="center"
+        android:paddingBottom="@dimen/common_l_spacing"
+        android:paddingTop="@dimen/common_l_spacing"
+        android:text="@string/share_weather_text"
+        android:textColor="@android:color/white"/>
+
+
+    <TextView
+        android:id="@+id/settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_selector_menu"
+        android:gravity="center"
+        android:paddingBottom="@dimen/common_l_spacing"
+        android:paddingTop="@dimen/common_l_spacing"
+        android:text="@string/settings_text"
+        android:textColor="@android:color/white"/>
+</LinearLayout>

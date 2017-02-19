@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@android:color/holo_blue_light</color>
+    <color name="colorPrimaryDark">@android:color/holo_blue_dark</color>
+    <color name="colorAccent">@android:color/holo_blue_light</color>
+
+    <!-- custom color -->
+    <color name="background">#fffafafa</color>
+    <color name="lighter_gray">#ffeaeaea</color>
+    <color name="darker_gray">#ffbebebe</color>
+    <color name="black_gray">#ff585858</color>
+    <color name="black">@android:color/black</color>
+    <color name="ripple_blue">#6833b5e5</color>
+    <color name="ripple_gray">#68585858</color>
+
+</resources>

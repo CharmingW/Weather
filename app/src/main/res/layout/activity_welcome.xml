@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_welcome"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.charming.weather.activity.WelcomeActivity">
+
+    <!--<com.charming.weather.ui.LedTextView-->
+        <!--android:gravity="center"-->
+        <!--android:background="@drawable/skip_bg"-->
+        <!--android:id="@+id/welcome_image"-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:src="@drawable/welcome"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--android:textSize="@dimen/xxl_text_size"/>-->
+
+    <ImageView
+        android:id="@+id/welcome_image"
+        android:src="@drawable/ic_back"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</FrameLayout>

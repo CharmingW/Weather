@@ -2,7 +2,7 @@ package com.charming.weather.parser;
 
 import android.util.Log;
 
-import com.charming.weather.entity.HeWeatherDataService;
+import com.charming.weather.entity.weather.HeWeatherDataService;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;

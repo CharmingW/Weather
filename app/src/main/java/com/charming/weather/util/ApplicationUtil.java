@@ -10,8 +10,11 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.StrictMode;
+import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -190,6 +193,106 @@ public class ApplicationUtil {
         intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
         rootView.getContext().startActivity(Intent.createChooser(intent, rootView.getContext().getString(R.string.share_target_text)));
+    }
+
+    public static void setStrictMode() {
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .detectDiskReads()
+                .detectDiskWrites()
+                .detectNetwork().penaltyLog().build());
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects()
+                .detectLeakedClosableObjects()
+                .penaltyLog()
+                .penaltyDeath()
+                .build());
+    }
+
+    public static int getStatusBarHeight(Context context) {
+        Class<?> c = null;
+
+        Object obj = null;
+
+        Field field = null;
+
+        int x = 0, sbar = 0;
+
+        try {
+
+            c = Class.forName("com.android.internal.R$dimen");
+
+            obj = c.newInstance();
+
+            field = c.getField("status_bar_height");
+
+            x = Integer.parseInt(field.get(obj).toString());
+
+            sbar = context.getResources().getDimensionPixelSize(x);
+
+        } catch (Exception e1) {
+
+            e1.printStackTrace();
+
+        }
+
+        return sbar;
+    }
+
+
+    public static void simulateScroll(final View view, final int startX, final int startY, final int endX, final int endY, final int duration) {
+        final long downTime = SystemClock.uptimeMillis();
+        final MotionEvent event = MotionEvent.obtain(downTime, downTime, MotionEvent.ACTION_DOWN, startX, startY, 0);
+        view.onTouchEvent(event);
+        final int deltaX = endX - startX;
+        final int deltaY = endY - startY;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int tempX, tempY;
+                int count = duration / 5;
+                for (int i = 1; i < count; i++) {
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    tempX = (startX + i * deltaX / count);
+                    tempY = (startY + i * deltaY / count);
+                    final MotionEvent event = MotionEvent.obtain(downTime + i * 5, downTime + i * 5, MotionEvent.ACTION_MOVE, tempX, tempY, 0);
+                    ((Activity) view.getContext()).runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            view.onTouchEvent(event);
+                        }
+                    });
+                }
+                ((Activity) view.getContext()).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final MotionEvent event = MotionEvent.obtain(downTime + duration, downTime + duration, MotionEvent.ACTION_UP, endX, endY, 0);
+                        view.onTouchEvent(event);
+                    }
+                });
+            }
+        }).start();
+
+
+        event.recycle();
+    }
+
+    public static void backToHome(Context context) {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        context.startActivity(intent);
+    }
+
+    private void simulateClick(View view, float x, float y) {
+        long downTime = SystemClock.uptimeMillis();
+        MotionEvent event = MotionEvent.obtain(downTime, downTime, MotionEvent.ACTION_DOWN, x, y, 0);
+        view.onTouchEvent(event);
+        event = MotionEvent.obtain(downTime + 100, downTime + 100, MotionEvent.ACTION_UP, x, y, 0);
+        view.onTouchEvent(event);
+        event.recycle();
     }
 
 }

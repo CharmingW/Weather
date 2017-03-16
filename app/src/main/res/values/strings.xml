@@ -1,6 +1,6 @@
 <resources>
     <!--weather-->
-    <string name="app_name">Weather</string>
+    <string name="app_name">看点天气</string>
     <string name="city_text">广州</string>
     <string name="weather_type_text">大雨</string>
     <string name="today_text">今天</string>
@@ -60,5 +60,38 @@
     <string name="error_refresh_text">出错啦，请点击刷新</string>
     <string name="share_target_text">分享天气到</string>
 
+    <string-array name="news_channel">
+        <item>头条</item>
+        <item>社会</item>
+        <item>科技</item>
+        <item>体育</item>
+        <item>娱乐</item>
+        <item>时尚</item>
+        <item>军事</item>
+        <item>国内</item>
+        <item>国际</item>
+    </string-array>
+
+    <string-array name="news_channel_en">
+        <item>top</item>
+        <item>shehui</item>
+        <item>keji</item>
+        <item>tiyu</item>
+        <item>yule</item>
+        <item>shishang</item>
+        <item>junshi</item>
+        <item>guonei</item>
+        <item>guoji</item>
+    </string-array>
+
+    <string name="top_description">这里，一定有你关心的</string>
+    <string name="shehui_description">表明上虚假的繁华，背后像是被蛆虫咀嚼过的虱子</string>
+    <string name="keji_description">没有信号，没有WiFi，你就慌了手脚，科技是让你更自由还是不自由</string>
+    <string name="tiyu_description">静止便是死亡，只有运动才能敲开永生的大门  ——泰戈尔</string>
+    <string name="yule_description">愿你在这复杂的娱乐圈，一直纯净下去</string>
+    <string name="shishang_description">会穿衣打扮并且愿意这样做的人，运气不会太差</string>
+    <string name="junshi_description">不为别的人，只为他人在侵犯我们的时候，有还击之力</string>
+    <string name="guonei_description">《论语》不过一万多字，却指导我们管理这块土地两千多年</string>
+    <string name="guoji_description">知自知彼，方能百战百胜</string>
 
 </resources>

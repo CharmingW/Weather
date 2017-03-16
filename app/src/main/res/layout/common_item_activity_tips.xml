@@ -13,11 +13,9 @@
         android:layout_weight="2">
 
         <ImageView
-
             android:id="@+id/tips_icon"
             android:layout_width="@dimen/item_icon_size"
             android:layout_height="@dimen/item_icon_size"
-            app:srcCompat="@drawable/ic_umbrella"
             android:layout_gravity="center_vertical"/>
     </FrameLayout>
 

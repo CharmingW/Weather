@@ -17,9 +17,9 @@
     <dimen name="xl_text_size">20sp</dimen>
     <dimen name="xxl_text_size">27sp</dimen>
 
-    <dimen name="status_bar_height">20dp</dimen>
-    <dimen name="common_title_bar_height">56dp</dimen>
-    <dimen name="multi_title_status_bar_height">68dp</dimen>
+    <dimen name="status_bar_height">22dp</dimen>
+    <dimen name="common_title_bar_height">44dp</dimen>
+    <dimen name="multi_title_status_bar_height">66dp</dimen>
 
     <dimen name="item_icon_size">52dp</dimen>
     <dimen name="menu_icon_size">20dp</dimen>
@@ -27,6 +27,8 @@
 
     <dimen name="News_icon_size">100dp</dimen>
     <dimen name="xs_text_size">6sp</dimen>
+    <dimen name="news_item_image_width">108dp</dimen>
+    <dimen name="news_item_image_height">80dp</dimen>
 
 
 </resources>

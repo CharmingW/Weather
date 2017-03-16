@@ -31,10 +31,10 @@
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
-            android:layout_height="3dp"
+            android:layout_height="2dp"
             android:layout_gravity="top"
-            android:max="100"
-            android:maxHeight="3dp"
+            android:max="1000"
+            android:maxHeight="2dp"
             />
     </FrameLayout>
 

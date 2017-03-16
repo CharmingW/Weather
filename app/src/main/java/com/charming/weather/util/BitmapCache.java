@@ -9,6 +9,7 @@ import android.util.LruCache;
 import com.android.volley.toolbox.ImageLoader;
 import com.jakewharton.disklrucache.DiskLruCache;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,7 +18,7 @@ import java.io.OutputStream;
  * Created by CharmingWong on 2016/12/10.
  */
 
-public class BitmapCache implements ImageLoader.ImageCache {
+public class BitmapCache implements ImageLoader.ImageCache, Closeable {
 
     private static final String TAG = "BitmapCache";
 
@@ -46,7 +47,10 @@ public class BitmapCache implements ImageLoader.ImageCache {
             DiskLruCache.Snapshot snapshot = mDiskLruCache.get(key);
             if (snapshot != null) {
                 Log.i(TAG, "getBitmap: load bitmap from disk cache");
-                return BitmapFactory.decodeStream(snapshot.getInputStream(0));
+                bitmap = BitmapFactory.decodeStream(snapshot.getInputStream(0));
+                snapshot.close();
+                mLruCache.put(key, bitmap);
+                return bitmap;
             }
 
         } catch (IOException e) {
@@ -66,9 +70,12 @@ public class BitmapCache implements ImageLoader.ImageCache {
             //写入磁盘缓存
             editor = mDiskLruCache.edit(key);
             out = editor.newOutputStream(0);
-            out.write(BitmapUtil.bitmapToByteArray(bitmap));
+            byte[] bmp = BitmapUtil.bitmapToByteArray(bitmap);
+            if (bmp != null) {
+                out.write(bmp);
+                Log.i(TAG, "putBitmap: wrote bitmap to disk cache successfully");
+            }
             editor.commit();
-            Log.i(TAG, "putBitmap: wrote bitmap to disk cache successfully");
         } catch (IOException e) {
             e.printStackTrace();
             if (editor != null) {
@@ -91,4 +98,8 @@ public class BitmapCache implements ImageLoader.ImageCache {
         }
     }
 
+    @Override
+    public void close() throws IOException {
+        mDiskLruCache.close();
+    }
 }

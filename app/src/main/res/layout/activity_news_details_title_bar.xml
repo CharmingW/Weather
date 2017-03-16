@@ -7,7 +7,7 @@
 
 
     <FrameLayout
-        android:id="@+id/btn_news_details_back"
+        android:id="@id/btn_back"
         style="@style/btn_menu_size">
 
         <ImageView

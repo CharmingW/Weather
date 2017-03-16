@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:background="@color/darker_gray"
-             android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/darker_gray"
+    android:orientation="vertical">
 
     <ImageView
         android:scaleType="fitXY"
         android:id="@+id/header_background"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        app:srcCompat="@drawable/ic_b2"/>
+        android:layout_height="180dp" />
 
     <LinearLayout
         android:background="#5f000000"

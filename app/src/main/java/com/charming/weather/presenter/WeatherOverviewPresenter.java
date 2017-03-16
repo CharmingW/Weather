@@ -47,11 +47,6 @@ public class WeatherOverviewPresenter implements IPresenter {
 
     private static WeatherOverviewPresenter instance;
 
-    public WeatherOverviewPresenter(OnResponseCallback onResponseCallback, DataParser dataParser) {
-        mOnResponseCallback = onResponseCallback;
-        mDataParser = dataParser;
-    }
-
     private WeatherOverviewPresenter(Context context) {
         mContext = context;
     }
@@ -247,7 +242,7 @@ public class WeatherOverviewPresenter implements IPresenter {
     public boolean checkDataUpdate() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(DATA_TAG, Context.MODE_PRIVATE);
         long lastUpdate = sharedPreferences.getLong("update_time", 0);
-        //距离上次更新过去15分钟则再次更新
+        //距离上次更新过去60分钟则再次更新
         if (System.currentTimeMillis() - lastUpdate > 60 * 60 * 1000) {
             return true;
         }

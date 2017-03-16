@@ -2,6 +2,6 @@
 <clip>
     <shape xmlns:android="http://schemas.android.com/apk/res/android"
            android:id="@android:id/progress">
-        <solid android:color="@android:color/holo_green_dark"/>
+        <solid android:color="@color/ripple_blue" />
     </shape>
 </clip>

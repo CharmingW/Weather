@@ -13,11 +13,11 @@ import android.widget.TextView;
 
 import com.charming.weather.R;
 import com.charming.weather.activity.WeatherOverviewActivity;
-import com.charming.weather.entity.Basic;
-import com.charming.weather.entity.Cond;
-import com.charming.weather.entity.Daily_forecast;
-import com.charming.weather.entity.Now;
-import com.charming.weather.entity.Wind;
+import com.charming.weather.entity.weather.Basic;
+import com.charming.weather.entity.weather.Cond;
+import com.charming.weather.entity.weather.Daily_forecast;
+import com.charming.weather.entity.weather.Now;
+import com.charming.weather.entity.weather.Wind;
 import com.charming.weather.util.ApplicationUtil;
 
 import java.util.List;
@@ -31,11 +31,8 @@ public class WeatherDetailsPagerAdapter extends FragmentPagerAdapter {
 
     private static final String DEGREE = "°";
 
-    private FragmentManager mFragmentManager;
-
     public WeatherDetailsPagerAdapter(FragmentManager fm) {
         super(fm);
-        mFragmentManager = fm;
     }
 
     @Override
@@ -82,11 +79,6 @@ public class WeatherDetailsPagerAdapter extends FragmentPagerAdapter {
             super.onCreate(savedInstanceState);
             mPage = getArguments().getInt("page");
 
-        }
-
-        @Override
-        public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-            super.onActivityCreated(savedInstanceState);
         }
 
 

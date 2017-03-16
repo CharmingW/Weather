@@ -5,7 +5,7 @@
     <color name="colorAccent">@android:color/holo_blue_light</color>
 
     <!-- custom color -->
-    <color name="background">#fffafafa</color>
+    <color name="white">#fffafafa</color>
     <color name="lighter_gray">#ffeaeaea</color>
     <color name="darker_gray">#ffbebebe</color>
     <color name="black_gray">#ff585858</color>

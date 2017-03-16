@@ -2,8 +2,7 @@
 <ripple android:color="@color/ripple_blue" xmlns:android="http://schemas.android.com/apk/res/android"
     >
     <item
-        android:drawable="@color/background"
+        android:drawable="@color/white"
         android:id="@android:id/mask"/>
-    <item
-        android:drawable="@color/background"/>
+    <item android:drawable="@color/white" />
 </ripple>

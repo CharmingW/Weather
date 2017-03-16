@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -14,7 +13,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.charming.weather.R;
 import com.charming.weather.comminterface.OnResponseCallback;
-import com.charming.weather.parser.DataParser;
+import com.charming.weather.parser.NewsGsonParser;
 import com.charming.weather.util.ApplicationUtil;
 import com.charming.weather.util.HashKeyUtil;
 import com.charming.weather.util.NetworkUtil;
@@ -33,52 +32,32 @@ import java.util.Map;
  */
 
 public class NewsPresenter implements IPresenter {
-    private static final String API_KEY = "c58b256f3b2c3b79dad4320888b8e5e3";
-    private String httpUrl = "http://apis.baidu.com/tngou/info/list?page=1&rows=20&id=";
-    private final String DATA_TAG = "news_data";
-    private String tag;
-
     private static final String TAG = "NewsPresenter";
-
-    private int mChannelId;
-
-    private OnResponseCallback mOnResponseCallback;
-    private DataParser mDataParser;
-
-    private static Context mContext;
-
     private static NewsPresenter instance;
+    private String mUrl;
+    private Context mContext;
+    private NewsGsonParser mDataParser;
+    private OnResponseCallback mOnResponseCallback;
+    private final String DATA_TAG = "news_data";
 
-    public void setChannelId(int id) {
-        mChannelId = id;
-        tag = "news_data_" + mChannelId;
+    public void setChannel(String channel) {
+        mUrl = "http://v.juhe.cn/toutiao/index?key=6b88d59b03a95861f8b2a9938738d625&type=" + channel;
     }
 
-    public NewsPresenter(OnResponseCallback onResponseCallback, DataParser dataParser) {
-        mOnResponseCallback = onResponseCallback;
-        mDataParser = dataParser;
-    }
-
-    private NewsPresenter() {
-    }
-
-    //单例模式
-    public static NewsPresenter getInstance(Context context) {
+    private NewsPresenter(Context context) {
         mContext = context;
+    }
+
+    public static NewsPresenter getInstance(Context context) {
         if (instance == null) {
-            synchronized (WeatherOverviewPresenter.class) {
+            synchronized (NewsPresenter.class) {
                 if (instance == null) {
-                    instance = new NewsPresenter();
+                    instance = new NewsPresenter(context);
                     return instance;
                 }
             }
         }
         return instance;
-    }
-
-    //设置数据解析器
-    public void setDataParser(DataParser dataParser) {
-        mDataParser = dataParser;
     }
 
     //设置请求回调
@@ -89,6 +68,9 @@ public class NewsPresenter implements IPresenter {
     //开始主导
     @Override
     public void startPresent() {
+        if (mDataParser == null) {
+            mDataParser = new NewsGsonParser();
+        }
         boolean isNetworkAvailable = NetworkUtil.checkNetworkStatus(mContext);
         boolean isUpdateAvailable = checkDataUpdate();
         if (isNetworkAvailable && isUpdateAvailable) {
@@ -126,14 +108,8 @@ public class NewsPresenter implements IPresenter {
             }
         };
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, httpUrl + mChannelId, listener, errorListener) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("apikey", API_KEY);
-                return headers;
-            }
-        };
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, mUrl, listener, errorListener);
+        Log.i("NewsPresenter", "requestData: " + stringRequest.getUrl());
         requestQueue.add(stringRequest);
         requestQueue.start();
     }
@@ -148,7 +124,7 @@ public class NewsPresenter implements IPresenter {
     public void parseData(Object data) {
         Map<String, Object> map = new HashMap<>();
         if (mDataParser != null) {
-            map = mDataParser.parse(data);
+            map = mDataParser.parse((String) data);
         }
         returnData(map);
         writeWeatherDataToLocal(map);
@@ -178,8 +154,8 @@ public class NewsPresenter implements IPresenter {
         try {
             if (parsedData != null) {
                 File file = new File(
-                        ApplicationUtil.getDiskCacheDir(mContext, "news"),
-                        HashKeyUtil.generateHashKey(httpUrl + mChannelId)
+                        ApplicationUtil.getDiskCacheDir(mContext, DATA_TAG),
+                        HashKeyUtil.generateHashKey(mUrl)
                 );
                 fos = new FileOutputStream(file);
                 oos = new ObjectOutputStream(fos);
@@ -189,7 +165,7 @@ public class NewsPresenter implements IPresenter {
                 //更新时间
                 SharedPreferences sharedPreferences = mContext.getSharedPreferences(DATA_TAG, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putLong("update_time", System.currentTimeMillis());
+                editor.putLong(mUrl, System.currentTimeMillis());
                 editor.apply();
                 Log.i(TAG, "writeNewsDataToLocal: wrote weather data successfully");
             }
@@ -216,8 +192,8 @@ public class NewsPresenter implements IPresenter {
         ObjectInputStream ois = null;
         try {
             File file = new File(
-                    ApplicationUtil.getDiskCacheDir(mContext, "news"),
-                    HashKeyUtil.generateHashKey(httpUrl + mChannelId)
+                    ApplicationUtil.getDiskCacheDir(mContext, DATA_TAG),
+                    HashKeyUtil.generateHashKey(mUrl)
             );
             fis = new FileInputStream(file);
             ois = new ObjectInputStream(fis);
@@ -246,9 +222,9 @@ public class NewsPresenter implements IPresenter {
     //检查更新
     public boolean checkDataUpdate() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(DATA_TAG, Context.MODE_PRIVATE);
-        long lastUpdate = sharedPreferences.getLong("update_time", 0);
+        long lastUpdate = sharedPreferences.getLong(mUrl, 0);
         //距离上次更新过去15分钟则再次更新
-        if (System.currentTimeMillis() - lastUpdate > 15 * 60 * 1000) {
+        if (System.currentTimeMillis() - lastUpdate > 30 * 1000) {
             return true;
         }
         return false;

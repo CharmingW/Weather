@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="horizontal"
+    android:id="@id/title_bar"
+    android:background="@color/white"
+    android:paddingTop="@dimen/status_bar_height"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/multi_title_status_bar_height"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:id="@id/btn_back"
+        style="@style/btn_menu_size">
+
+        <ImageView
+            android:layout_gravity="center"
+            android:id="@id/back_icon"
+            android:layout_width="@dimen/menu_icon_size"
+            android:layout_height="@dimen/menu_icon_size"
+            app:srcCompat="@drawable/ic_back" />
+    </FrameLayout>
+
+    <TextView
+        android:textColor="@android:color/black"
+        android:layout_gravity="center_vertical"
+        android:id="@id/title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_s_spacing" />
+</LinearLayout>

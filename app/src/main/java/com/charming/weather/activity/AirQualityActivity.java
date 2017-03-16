@@ -6,9 +6,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.charming.weather.R;
-import com.charming.weather.entity.Aqi;
-import com.charming.weather.entity.Basic;
-import com.charming.weather.entity.City;
+import com.charming.weather.entity.weather.Aqi;
+import com.charming.weather.entity.weather.Basic;
+import com.charming.weather.entity.weather.City;
 import com.charming.weather.ui.AirQualityView;
 import com.charming.weather.util.ApplicationUtil;
 

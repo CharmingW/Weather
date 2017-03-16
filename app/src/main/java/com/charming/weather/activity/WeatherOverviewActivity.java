@@ -1,8 +1,16 @@
 package com.charming.weather.activity;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,29 +18,32 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.charming.weather.R;
+import com.charming.weather.adapter.NewsTypeAdapter;
 import com.charming.weather.comminterface.OnResponseCallback;
-import com.charming.weather.entity.Aqi;
-import com.charming.weather.entity.Basic;
-import com.charming.weather.entity.City;
-import com.charming.weather.entity.Comf;
-import com.charming.weather.entity.Cond;
-import com.charming.weather.entity.Cw;
-import com.charming.weather.entity.Daily_forecast;
-import com.charming.weather.entity.Drsg;
-import com.charming.weather.entity.Flu;
-import com.charming.weather.entity.Hourly_forecast;
-import com.charming.weather.entity.Now;
-import com.charming.weather.entity.Sport;
-import com.charming.weather.entity.Suggestion;
-import com.charming.weather.entity.Tmp;
-import com.charming.weather.entity.Trav;
-import com.charming.weather.entity.Uv;
-import com.charming.weather.entity.Wind;
+import com.charming.weather.entity.weather.Aqi;
+import com.charming.weather.entity.weather.Basic;
+import com.charming.weather.entity.weather.City;
+import com.charming.weather.entity.weather.Comf;
+import com.charming.weather.entity.weather.Cond;
+import com.charming.weather.entity.weather.Cw;
+import com.charming.weather.entity.weather.Daily_forecast;
+import com.charming.weather.entity.weather.Drsg;
+import com.charming.weather.entity.weather.Flu;
+import com.charming.weather.entity.weather.Hourly_forecast;
+import com.charming.weather.entity.weather.Now;
+import com.charming.weather.entity.weather.Sport;
+import com.charming.weather.entity.weather.Suggestion;
+import com.charming.weather.entity.weather.Tmp;
+import com.charming.weather.entity.weather.Trav;
+import com.charming.weather.entity.weather.Uv;
+import com.charming.weather.entity.weather.Wind;
 import com.charming.weather.parser.GlobalGsonParser;
 import com.charming.weather.presenter.WeatherOverviewPresenter;
 import com.charming.weather.ui.AirQualityView;
@@ -52,7 +63,27 @@ public class WeatherOverviewActivity
 
     private static final String TAG = "WeatherOverviewActivity";
     private static final String DEGREE = "°";
+    private static final int REQUEST_LOCATION_CODE = 0;
     private static Map<String, Object> mWeatherData;
+
+    public static Map<String, Object> getWeatherData() {
+        return mWeatherData;
+    }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        switch (requestCode) {
+//            case REQUEST_LOCATION_CODE:
+//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//                    Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//                    Log.i(TAG, "onCreate: " + location.getAltitude());
+//                    Log.i(TAG, "onCreate: " + location.getLongitude());
+//                    Log.i(TAG, "onCreate: " + location.getTime());
+//                }
+//        }
+//
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,20 +91,63 @@ public class WeatherOverviewActivity
         //初始化数据主导器
         initPresenter();
         WeatherOverviewPresenter.getInstance(this).startPresent();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+            }
+        }
+
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationListener ll = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.i(TAG, "onCreate: " + location.getAltitude());
+                Log.i(TAG, "onCreate: " + location.getLongitude());
+                Log.i(TAG, "onCreate: " + location.getTime());
+                Toast.makeText(WeatherOverviewActivity.this, "定位成功", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, ll);
     }
 
     private void init() {
+
         setContentView(R.layout.activity_weather_overview);
+
         //设置刷新动作
         setRefreshAction();
+
         //填充数据
         fillDataIntoView();
+
         //滚动时标题透明度变化
         setTitleAlphaWithScrolling();
+
         //设置导航菜单动作
         setNvMenuAction();
+
         //为控件设置监听器
         setOnClickListenerForView();
+
+        //设置新闻列表
+        setNewsList();
     }
 
     private void setOnClickListenerForView() {
@@ -96,7 +170,7 @@ public class WeatherOverviewActivity
                 Log.i(TAG, "onResponseError: " + e.getMessage());
                 Toast.makeText(WeatherOverviewActivity.this, R.string.no_data_text, Toast.LENGTH_SHORT).show();
                 setContentView(R.layout.news_error_refresh);
-                findViewById(R.id.refresh).setOnClickListener(WeatherOverviewActivity.this);
+                findViewById(R.id.error_refresh).setOnClickListener(WeatherOverviewActivity.this);
             }
         });
     }
@@ -140,6 +214,7 @@ public class WeatherOverviewActivity
 
             }
         });
+
         View menu = findViewById(R.id.btn_menu);
         menu.setOnClickListener(this);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nv_menu);
@@ -164,11 +239,11 @@ public class WeatherOverviewActivity
                 WeatherOverviewPresenter presenter = WeatherOverviewPresenter.getInstance(WeatherOverviewActivity.this);
                 if (presenter.checkDataUpdate()) {
                     presenter.startPresent();
-                } else {
-                    Toast.makeText(WeatherOverviewActivity.this, R.string.no_update, Toast.LENGTH_SHORT).show();
-                    if (weatherRefresh.isRefreshing()) {
-                        weatherRefresh.setRefreshing(false);
-                    }
+                    return;
+                }
+                Toast.makeText(WeatherOverviewActivity.this, R.string.no_update, Toast.LENGTH_SHORT).show();
+                if (weatherRefresh.isRefreshing()) {
+                    weatherRefresh.setRefreshing(false);
                 }
             }
         });
@@ -214,10 +289,6 @@ public class WeatherOverviewActivity
         if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
             drawerLayout.closeDrawer(GravityCompat.END);
         }
-    }
-
-    public static Map<String, Object> getWeatherData() {
-        return mWeatherData;
     }
 
     @Override
@@ -266,8 +337,7 @@ public class WeatherOverviewActivity
 
             //指数
             case R.id.comfortable_tips:
-                intent = new Intent(WeatherOverviewActivity.this, NewsActivity.class);
-                intent.putExtra("tips", 1);
+                intent = new Intent(WeatherOverviewActivity.this, TipsActivity.class);
                 intent.putExtra("index", getString(R.string.comfortable_index_text));
                 intent.putExtra("imageId", R.drawable.ic_comfortable);
                 suggestion = (Suggestion) mWeatherData.get("suggestion");
@@ -276,8 +346,7 @@ public class WeatherOverviewActivity
                 startActivity(intent);
                 break;
             case R.id.dress_tips:
-                intent = new Intent(WeatherOverviewActivity.this, NewsActivity.class);
-                intent.putExtra("tips", 2);
+                intent = new Intent(WeatherOverviewActivity.this, TipsActivity.class);
                 intent.putExtra("index", getString(R.string.dress_index_text));
                 intent.putExtra("imageId", R.drawable.ic_dress);
                 suggestion = (Suggestion) mWeatherData.get("suggestion");
@@ -287,8 +356,7 @@ public class WeatherOverviewActivity
 
                 break;
             case R.id.cold_tips:
-                intent = new Intent(WeatherOverviewActivity.this, NewsActivity.class);
-                intent.putExtra("tips", 3);
+                intent = new Intent(WeatherOverviewActivity.this, TipsActivity.class);
                 intent.putExtra("index", getString(R.string.cold_index_text));
                 intent.putExtra("imageId", R.drawable.ic_cold);
                 suggestion = (Suggestion) mWeatherData.get("suggestion");
@@ -298,8 +366,7 @@ public class WeatherOverviewActivity
 
                 break;
             case R.id.ultraviolet_tips:
-                intent = new Intent(WeatherOverviewActivity.this, NewsActivity.class);
-                intent.putExtra("tips", 4);
+                intent = new Intent(WeatherOverviewActivity.this, TipsActivity.class);
                 intent.putExtra("index", getString(R.string.ultraviolet_index_text));
                 intent.putExtra("imageId", R.drawable.ic_ultraviolet);
                 suggestion = (Suggestion) mWeatherData.get("suggestion");
@@ -309,8 +376,7 @@ public class WeatherOverviewActivity
 
                 break;
             case R.id.exercise_tips:
-                intent = new Intent(WeatherOverviewActivity.this, NewsActivity.class);
-                intent.putExtra("tips", 5);
+                intent = new Intent(WeatherOverviewActivity.this, TipsActivity.class);
                 intent.putExtra("index", getString(R.string.tips_exercise_text));
                 intent.putExtra("imageId", R.drawable.ic_exercise);
                 suggestion = (Suggestion) mWeatherData.get("suggestion");
@@ -320,8 +386,7 @@ public class WeatherOverviewActivity
 
                 break;
             case R.id.travel_tips:
-                intent = new Intent(WeatherOverviewActivity.this, NewsActivity.class);
-                intent.putExtra("tips", 6);
+                intent = new Intent(WeatherOverviewActivity.this, TipsActivity.class);
                 intent.putExtra("index", getString(R.string.tips_travel_text));
                 intent.putExtra("imageId", R.drawable.ic_travel);
                 suggestion = (Suggestion) mWeatherData.get("suggestion");
@@ -331,8 +396,7 @@ public class WeatherOverviewActivity
 
                 break;
             case R.id.wash_car_tips:
-                intent = new Intent(WeatherOverviewActivity.this, NewsActivity.class);
-                intent.putExtra("tips", 7);
+                intent = new Intent(WeatherOverviewActivity.this, TipsActivity.class);
                 intent.putExtra("index", getString(R.string.tips_wash_car_text));
                 intent.putExtra("imageId", R.drawable.ic_wash_car);
                 suggestion = (Suggestion) mWeatherData.get("suggestion");
@@ -354,7 +418,7 @@ public class WeatherOverviewActivity
                 intent = new Intent(WeatherOverviewActivity.this, AirQualityActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.refresh:
+            case R.id.error_refresh:
                 WeatherOverviewPresenter.getInstance(this).startPresent();
                 break;
             default:
@@ -377,14 +441,10 @@ public class WeatherOverviewActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_weather_overview);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (drawer.isDrawerOpen(GravityCompat.END)) {
+            drawer.closeDrawer(GravityCompat.END);
         } else {
             super.onBackPressed();
-//            Intent home = new Intent(Intent.ACTION_MAIN);
-//            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            home.addCategory(Intent.CATEGORY_HOME);
-//            startActivity(home);
         }
     }
 
@@ -629,5 +689,19 @@ public class WeatherOverviewActivity
     private void showBasic(Basic basic) {
         ((TextView) findViewById(R.id.location_weather_type)).setText(basic.getCity());
         ((TextView) findViewById(R.id.title_text)).setText(basic.getCity());
+    }
+
+    private void setNewsList() {
+        GridView newsList = (GridView) findViewById(R.id.news_list);
+        newsList.setAdapter(new NewsTypeAdapter(this));
+        newsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(WeatherOverviewActivity.this, NewsActivity.class);
+                String type = ((TextView) view.findViewById(R.id.type_text)).getText().toString();
+                intent.putExtra("news_type", type);
+                startActivity(intent);
+            }
+        });
     }
 }

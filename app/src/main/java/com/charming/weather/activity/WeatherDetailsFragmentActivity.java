@@ -34,6 +34,7 @@ public class WeatherDetailsFragmentActivity extends FragmentActivity {
     private void init() {
         mLinearLayout = (LinearLayout) findViewById(R.id.daily_date);
         mViewPager = (ViewPager) findViewById(R.id.weather_tendency_page);
+        mViewPager.setOffscreenPageLimit(0);
         setDateView();
         setDailyView();
         setDailyViewBackground();
@@ -57,10 +58,10 @@ public class WeatherDetailsFragmentActivity extends FragmentActivity {
             public void onPageSelected(int position) {
                 mLastPage = mCurrentPage;
                 mCurrentPage = position;
-                TextView child = (TextView) WeatherDetailsFragmentActivity.this.mLinearLayout.getChildAt(mLastPage);
+                TextView child = (TextView) mLinearLayout.getChildAt(mLastPage);
                 child.setBackground(getDrawable(R.drawable.daily_view_bg));
                 child.setTextColor(getResources().getColor(R.color.black_gray));
-                child = (TextView) WeatherDetailsFragmentActivity.this.mLinearLayout.getChildAt(mCurrentPage);
+                child = (TextView) mLinearLayout.getChildAt(mCurrentPage);
                 child.setBackground(getDrawable(R.drawable.daily_view_selected_bg));
                 child.setTextColor(Color.WHITE);
             }
@@ -133,7 +134,7 @@ public class WeatherDetailsFragmentActivity extends FragmentActivity {
                 public void onClick(View v) {
                     LinearLayout ll = (LinearLayout) findViewById(R.id.daily_date);
                     int index = ll.indexOfChild(v);
-                    mViewPager.setCurrentItem(index);
+                    mViewPager.setCurrentItem(index, false);
                 }
             });
         }

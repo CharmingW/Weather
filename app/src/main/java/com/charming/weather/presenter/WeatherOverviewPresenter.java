@@ -15,6 +15,7 @@ import com.android.volley.toolbox.Volley;
 import com.charming.weather.R;
 import com.charming.weather.comminterface.OnResponseCallback;
 import com.charming.weather.parser.DataParser;
+import com.charming.weather.parser.GlobalGsonParser;
 import com.charming.weather.util.ApplicationUtil;
 import com.charming.weather.util.HashKeyUtil;
 import com.charming.weather.util.NetworkUtil;
@@ -35,8 +36,7 @@ import java.util.Map;
 public class WeatherOverviewPresenter implements IPresenter {
 
     private static final String API_KEY = "c58b256f3b2c3b79dad4320888b8e5e3";
-    private String httpUrl = "http://apis.baidu.com/heweather/pro/weather?city=";
-    private String mCityName = "广州";
+    private String httpUrl;
     private final String DATA_TAG = "weather_data";
     private static final String TAG = "WeatherPresenter";
 
@@ -45,33 +45,9 @@ public class WeatherOverviewPresenter implements IPresenter {
 
     private Context mContext;
 
-    private static WeatherOverviewPresenter instance;
-
-    private WeatherOverviewPresenter(Context context) {
+    public WeatherOverviewPresenter(Context context) {
         mContext = context;
-    }
-
-    //单例模式
-    public static WeatherOverviewPresenter getInstance(Context context) {
-        if (instance == null) {
-            synchronized (WeatherOverviewPresenter.class) {
-                if (instance == null) {
-                    instance = new WeatherOverviewPresenter(context);
-                    return instance;
-                }
-            }
-        }
-        return instance;
-    }
-
-    //设置城市参数
-    public void setCityName(String cityName) {
-        mCityName = cityName;
-    }
-
-    //设置数据解析器
-    public void setDataParser(DataParser dataParser) {
-        mDataParser = dataParser;
+        mDataParser = new GlobalGsonParser();
     }
 
     //设置请求回调
@@ -82,6 +58,9 @@ public class WeatherOverviewPresenter implements IPresenter {
     //开始主导
     @Override
     public void startPresent() {
+        SharedPreferences spf = mContext.getSharedPreferences("location_city", Context.MODE_PRIVATE);
+        String city = spf.getString("city", null);
+        httpUrl = "http://apis.baidu.com/heweather/pro/weather?city=" + city;
         boolean isNetworkAvailable = NetworkUtil.checkNetworkStatus(mContext);
         boolean isUpdateAvailable = checkDataUpdate();
         if (isNetworkAvailable && isUpdateAvailable) {
@@ -119,7 +98,9 @@ public class WeatherOverviewPresenter implements IPresenter {
             }
         };
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, httpUrl + mCityName, listener, errorListener) {
+
+        Log.i(TAG, "requestData: " + httpUrl);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, httpUrl, listener, errorListener) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
@@ -173,7 +154,7 @@ public class WeatherOverviewPresenter implements IPresenter {
             try {
                 File file = new File(
                         ApplicationUtil.getDiskCacheDir(mContext, "weather"),
-                        HashKeyUtil.generateHashKey(httpUrl + mCityName)
+                        HashKeyUtil.generateHashKey(httpUrl)
                 );
                 fos = new FileOutputStream(file);
                 oos = new ObjectOutputStream(fos);
@@ -183,7 +164,7 @@ public class WeatherOverviewPresenter implements IPresenter {
                 //更新时间
                 SharedPreferences sharedPreferences = mContext.getSharedPreferences(DATA_TAG, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putLong("update_time", System.currentTimeMillis());
+                editor.putLong(httpUrl, System.currentTimeMillis());
                 editor.apply();
                 Log.i(TAG, "writeWeatherDataToLocal: wrote weather data successful");
             } catch (Exception e) {
@@ -211,7 +192,7 @@ public class WeatherOverviewPresenter implements IPresenter {
         try {
             File file = new File(
                     ApplicationUtil.getDiskCacheDir(mContext, "weather"),
-                    HashKeyUtil.generateHashKey(httpUrl + mCityName)
+                    HashKeyUtil.generateHashKey(httpUrl)
             );
             fis = new FileInputStream(file);
             ois = new ObjectInputStream(fis);
@@ -241,7 +222,7 @@ public class WeatherOverviewPresenter implements IPresenter {
     //检查更新
     public boolean checkDataUpdate() {
         SharedPreferences sharedPreferences = mContext.getSharedPreferences(DATA_TAG, Context.MODE_PRIVATE);
-        long lastUpdate = sharedPreferences.getLong("update_time", 0);
+        long lastUpdate = sharedPreferences.getLong(httpUrl, 0);
         //距离上次更新过去60分钟则再次更新
         if (System.currentTimeMillis() - lastUpdate > 60 * 60 * 1000) {
             return true;

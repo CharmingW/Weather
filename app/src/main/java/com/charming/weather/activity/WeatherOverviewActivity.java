@@ -1,16 +1,11 @@
 package com.charming.weather.activity;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,6 +19,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.location.Poi;
 import com.charming.weather.R;
 import com.charming.weather.adapter.NewsTypeAdapter;
 import com.charming.weather.comminterface.OnResponseCallback;
@@ -44,7 +44,6 @@ import com.charming.weather.entity.weather.Tmp;
 import com.charming.weather.entity.weather.Trav;
 import com.charming.weather.entity.weather.Uv;
 import com.charming.weather.entity.weather.Wind;
-import com.charming.weather.parser.GlobalGsonParser;
 import com.charming.weather.presenter.WeatherOverviewPresenter;
 import com.charming.weather.ui.AirQualityView;
 import com.charming.weather.ui.AllDayWeatherTendencyView;
@@ -63,69 +62,130 @@ public class WeatherOverviewActivity
 
     private static final String TAG = "WeatherOverviewActivity";
     private static final String DEGREE = "°";
-    private static final int REQUEST_LOCATION_CODE = 0;
     private static Map<String, Object> mWeatherData;
+
+    private Handler mHandler = new Handler();
+    private WeatherOverviewPresenter mPresenter;
 
     public static Map<String, Object> getWeatherData() {
         return mWeatherData;
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        switch (requestCode) {
-//            case REQUEST_LOCATION_CODE:
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//                    Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//                    Log.i(TAG, "onCreate: " + location.getAltitude());
-//                    Log.i(TAG, "onCreate: " + location.getLongitude());
-//                    Log.i(TAG, "onCreate: " + location.getTime());
-//                }
-//        }
-//
-//    }
+    private LocationClient mLocationClient;
+    private BDLocationListener mLocationListener = new BDLocationListener() {
+        @Override
+        public void onReceiveLocation(BDLocation bdLocation) {
+            mLocationClient.stop();
+            int locType = bdLocation.getLocType();
+            if (locType == BDLocation.TypeGpsLocation
+                    || locType == BDLocation.TypeNetWorkLocation) {
+                String city = bdLocation.getCity();
+                SharedPreferences spf = getSharedPreferences("location_city", MODE_PRIVATE);
+                String oldCity = spf.getString("city", null);
+                Log.i(TAG, "onReceiveLocation: " + city);
+                final List<Poi> list = bdLocation.getPoiList();
+                if (list != null) {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            TextView location
+                                    = (TextView) WeatherOverviewActivity.this.findViewById(R.id.specific_location);
+                            location.setText(list.get(0).getName());
+                        }
+                    });
+                }
+                if (oldCity != null && oldCity.equals(city)) {
+                    return;
+                }
+
+                SharedPreferences.Editor editor = spf.edit().putString("city", city);
+                SharedPreferencesCompat.EditorCompat editorCompat = SharedPreferencesCompat.EditorCompat.getInstance();
+                editorCompat.apply(editor);
+
+               mPresenter.startPresent();
+            } else {
+                Toast.makeText(WeatherOverviewActivity.this, "定位失败，注意是否开启了定位权限", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void onConnectHotSpotMessage(String s, int i) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //初始化数据主导器
+        mPresenter = new WeatherOverviewPresenter(getApplicationContext());
+        mLocationClient = new LocationClient(getApplicationContext());
+        initLocation();
         initPresenter();
-        WeatherOverviewPresenter.getInstance(this).startPresent();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
-            }
+
+        SharedPreferences spf = getSharedPreferences("location_city", MODE_PRIVATE);
+        String city = spf.getString("city", null);
+
+        if (city == null) {
+            //开始定位
+            mLocationClient.start();
+        } else {
+            //初始化数据主导器
+            mPresenter.startPresent();
+
+            mHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                   mLocationClient.start();
+                }
+            }, 2000);
         }
-
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        LocationListener ll = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                Log.i(TAG, "onCreate: " + location.getAltitude());
-                Log.i(TAG, "onCreate: " + location.getLongitude());
-                Log.i(TAG, "onCreate: " + location.getTime());
-                Toast.makeText(WeatherOverviewActivity.this, "定位成功", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, ll);
     }
+
+
+
+    private void initLocation() {
+
+        LocationClientOption option = new LocationClientOption();
+
+        option.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);
+        //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
+
+        option.setCoorType("bd09ll");
+        //可选，默认gcj02，设置返回的定位结果坐标系
+
+        int span = 10000;
+        option.setScanSpan(span);
+        //可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+
+        option.setIsNeedAddress(true);
+        //可选，设置是否需要地址信息，默认不需要
+
+        option.setOpenGps(true);
+        //可选，默认false,设置是否使用gps
+
+        option.setLocationNotify(false);
+        //可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
+
+        option.setIsNeedLocationDescribe(true);
+        //可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
+
+        option.setIsNeedLocationPoiList(true);
+        //可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
+
+        option.setIgnoreKillProcess(false);
+        //可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
+
+        option.SetIgnoreCacheException(false);
+        //可选，默认false，设置是否收集CRASH信息，默认收集
+
+        option.setEnableSimulateGps(false);
+        //可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
+
+        mLocationClient.setLocOption(option);
+    }
+
+
+
 
     private void init() {
 
@@ -156,9 +216,7 @@ public class WeatherOverviewActivity
     }
 
     private void initPresenter() {
-        WeatherOverviewPresenter presenter = WeatherOverviewPresenter.getInstance(this);
-        presenter.setDataParser(new GlobalGsonParser());
-        presenter.setOnResponseCallback(new OnResponseCallback() {
+        mPresenter.setOnResponseCallback(new OnResponseCallback() {
             @Override
             public void onResponseSuccess(Object response) {
                 mWeatherData = ((Map) response);
@@ -171,6 +229,23 @@ public class WeatherOverviewActivity
                 Toast.makeText(WeatherOverviewActivity.this, R.string.no_data_text, Toast.LENGTH_SHORT).show();
                 setContentView(R.layout.news_error_refresh);
                 findViewById(R.id.error_refresh).setOnClickListener(WeatherOverviewActivity.this);
+            }
+        });
+    }
+
+    private void setRefreshAction() {
+        final SwipeRefreshLayout weatherRefresh = (SwipeRefreshLayout) findViewById(R.id.weather_refresh);
+        weatherRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (mPresenter.checkDataUpdate()) {
+                    mPresenter.startPresent();
+                    return;
+                }
+                Toast.makeText(WeatherOverviewActivity.this, R.string.no_update, Toast.LENGTH_SHORT).show();
+                if (weatherRefresh.isRefreshing()) {
+                    weatherRefresh.setRefreshing(false);
+                }
             }
         });
     }
@@ -215,6 +290,7 @@ public class WeatherOverviewActivity
             }
         });
 
+
         View menu = findViewById(R.id.btn_menu);
         menu.setOnClickListener(this);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nv_menu);
@@ -231,23 +307,6 @@ public class WeatherOverviewActivity
         settings.setOnClickListener(this);
     }
 
-    private void setRefreshAction() {
-        final SwipeRefreshLayout weatherRefresh = (SwipeRefreshLayout) findViewById(R.id.weather_refresh);
-        weatherRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                WeatherOverviewPresenter presenter = WeatherOverviewPresenter.getInstance(WeatherOverviewActivity.this);
-                if (presenter.checkDataUpdate()) {
-                    presenter.startPresent();
-                    return;
-                }
-                Toast.makeText(WeatherOverviewActivity.this, R.string.no_update, Toast.LENGTH_SHORT).show();
-                if (weatherRefresh.isRefreshing()) {
-                    weatherRefresh.setRefreshing(false);
-                }
-            }
-        });
-    }
 
     private void setTitleAlphaWithScrolling() {
         final View title = findViewById(R.id.title);
@@ -278,6 +337,12 @@ public class WeatherOverviewActivity
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        mLocationClient.registerLocationListener(mLocationListener);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
     }
@@ -288,6 +353,10 @@ public class WeatherOverviewActivity
         DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.activity_weather_overview);
         if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
             drawerLayout.closeDrawer(GravityCompat.END);
+        }
+        mLocationClient.unRegisterLocationListener(mLocationListener);
+        if (mLocationClient.isStarted()) {
+            mLocationClient.stop();
         }
     }
 
@@ -419,7 +488,7 @@ public class WeatherOverviewActivity
                 startActivity(intent);
                 break;
             case R.id.error_refresh:
-                WeatherOverviewPresenter.getInstance(this).startPresent();
+                mPresenter.startPresent();
                 break;
             default:
                 break;
@@ -430,10 +499,7 @@ public class WeatherOverviewActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
-                String cityName = data.getStringExtra("city_name");
-                WeatherOverviewPresenter presenter = WeatherOverviewPresenter.getInstance(this);
-                presenter.setCityName(cityName);
-                presenter.startPresent();
+                mPresenter.startPresent();
             }
         }
     }
@@ -704,4 +770,6 @@ public class WeatherOverviewActivity
             }
         });
     }
+
+
 }

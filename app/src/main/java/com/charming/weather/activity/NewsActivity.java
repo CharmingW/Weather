@@ -43,6 +43,7 @@ public class NewsActivity extends AppCompatActivity implements View.OnClickListe
     private Map<String, Object> mNewsData;
     private String mNewsType;
     private SwipeRefreshLayout mRefresh;
+    private NewsPresenter mPresenter;
 
 
     public NewsActivity() {
@@ -57,8 +58,8 @@ public class NewsActivity extends AppCompatActivity implements View.OnClickListe
         mNewsType = getIntent().getStringExtra("news_type");
         setContentView(R.layout.activity_news);
         init();
-        NewsPresenter presenter = NewsPresenter.getInstance(this);
-        presenter.setOnResponseCallback(new OnResponseCallback() {
+        mPresenter = new NewsPresenter(this);
+        mPresenter.setOnResponseCallback(new OnResponseCallback() {
             public void onResponseSuccess(Object response) {
                 if (mRefresh.isRefreshing()) {
                     mRefresh.setRefreshing(false);
@@ -78,8 +79,8 @@ public class NewsActivity extends AppCompatActivity implements View.OnClickListe
                 errorView.setOnClickListener(NewsActivity.this);
             }
         });
-        presenter.setChannel(getNewsChannel(mNewsType));
-        presenter.startPresent();
+        mPresenter.setChannel(getNewsChannel(mNewsType));
+        mPresenter.startPresent();
     }
 
     private void init() {
@@ -87,7 +88,7 @@ public class NewsActivity extends AppCompatActivity implements View.OnClickListe
         mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
             public void onRefresh() {
-                NewsPresenter.getInstance(NewsActivity.this).startPresent();
+                mPresenter.startPresent();
             }
         });
         findViewById(R.id.btn_back).setOnClickListener(this);
@@ -167,8 +168,7 @@ public class NewsActivity extends AppCompatActivity implements View.OnClickListe
                 return;
             }
             case R.id.error_refresh: {
-                NewsPresenter presenter = NewsPresenter.getInstance(this);
-                presenter.startPresent();
+                mPresenter.startPresent();
                 break;
             }
         }

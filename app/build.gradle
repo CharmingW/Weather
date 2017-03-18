@@ -1,6 +1,20 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        debug {
+            keyAlias 'debug'
+            keyPassword 'cm19951018'
+            storeFile file('C:/Users/56223/.android/debug.keystore')
+            storePassword 'cm19951018'
+        }
+        release {
+            keyAlias 'release'
+            keyPassword 'cm19951018'
+            storeFile file('C:/Users/56223/.android/release.keystore')
+            storePassword 'cm19951018'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
     defaultConfig {
@@ -17,7 +31,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    productFlavors {
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
     }
 }
 
@@ -31,4 +48,7 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.jakewharton:disklrucache:2.0.2'
     compile 'com.android.support.test:runner:0.5'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
 }

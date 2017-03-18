@@ -27,6 +27,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/common_s_spacing"
             />
+
+        <TextView
+            android:id="@+id/specific_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_s_spacing" />
     </LinearLayout>
 
     <ImageView

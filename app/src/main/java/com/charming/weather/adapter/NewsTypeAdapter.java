@@ -6,7 +6,6 @@
 package com.charming.weather.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +16,12 @@ import android.widget.TextView;
 import com.charming.weather.R;
 
 public class NewsTypeAdapter extends BaseAdapter {
-    private static final String TAG = "NewsTypeAdapter";
     private Context mContext;
     private String[] mNewsType;
 
     public NewsTypeAdapter(Context context) {
         mContext = context;
-        mNewsType = mContext.getResources().getStringArray(0x7f0d0000);
-        Log.i("NewsTypeAdapter", "NewsTypeAdapter: " + mNewsType.length);
+        mNewsType = mContext.getResources().getStringArray(R.array.news_channel);
     }
 
     public int getCount() {

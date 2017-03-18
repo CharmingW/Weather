@@ -33,7 +33,6 @@ import java.util.Map;
 
 public class NewsPresenter implements IPresenter {
     private static final String TAG = "NewsPresenter";
-    private static NewsPresenter instance;
     private String mUrl;
     private Context mContext;
     private NewsGsonParser mDataParser;
@@ -44,20 +43,9 @@ public class NewsPresenter implements IPresenter {
         mUrl = "http://v.juhe.cn/toutiao/index?key=6b88d59b03a95861f8b2a9938738d625&type=" + channel;
     }
 
-    private NewsPresenter(Context context) {
+    public NewsPresenter(Context context) {
         mContext = context;
-    }
-
-    public static NewsPresenter getInstance(Context context) {
-        if (instance == null) {
-            synchronized (NewsPresenter.class) {
-                if (instance == null) {
-                    instance = new NewsPresenter(context);
-                    return instance;
-                }
-            }
-        }
-        return instance;
+        mDataParser = new NewsGsonParser();
     }
 
     //设置请求回调
@@ -68,9 +56,6 @@ public class NewsPresenter implements IPresenter {
     //开始主导
     @Override
     public void startPresent() {
-        if (mDataParser == null) {
-            mDataParser = new NewsGsonParser();
-        }
         boolean isNetworkAvailable = NetworkUtil.checkNetworkStatus(mContext);
         boolean isUpdateAvailable = checkDataUpdate();
         if (isNetworkAvailable && isUpdateAvailable) {

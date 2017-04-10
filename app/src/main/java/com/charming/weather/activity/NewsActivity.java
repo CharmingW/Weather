@@ -263,6 +263,11 @@ public class NewsActivity extends AppCompatActivity implements View.OnClickListe
         super.finalize();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
     protected void onDestroy() {
         super.onDestroy();
         try {

@@ -68,6 +68,9 @@ public class BitmapCache implements ImageLoader.ImageCache, Closeable {
         DiskLruCache.Editor editor = null;
         try {
             //写入磁盘缓存
+            if (mDiskLruCache.isClosed()) {
+                return;
+            }
             editor = mDiskLruCache.edit(key);
             out = editor.newOutputStream(0);
             byte[] bmp = BitmapUtil.bitmapToByteArray(bitmap);

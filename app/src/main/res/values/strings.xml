@@ -7,7 +7,7 @@
     <string name="tomorrow_text">明天</string>
     <string name="the_day_after_tomorrow_text">后天</string>
     <string name="weather_icon_description_text">weather type icon</string>
-    <string name="weather_tendency_entrance_text">15天趋势预报</string>
+    <string name="weather_tendency_entrance_text">7天趋势预报</string>
     <string name="all_day_weather_tendency_title_text">24小时预报</string>
     <string name="air_quality_text">空气质量</string>
     <string name="air_quality_details_text">空气质量详情</string>

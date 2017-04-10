@@ -98,7 +98,6 @@ public class WeatherOverviewPresenter implements IPresenter {
             }
         };
 
-
         Log.i(TAG, "requestData: " + httpUrl);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, httpUrl, listener, errorListener) {
             @Override
@@ -109,7 +108,6 @@ public class WeatherOverviewPresenter implements IPresenter {
             }
         };
         requestQueue.add(stringRequest);
-        requestQueue.start();
     }
 
     //请求完成
@@ -126,7 +124,6 @@ public class WeatherOverviewPresenter implements IPresenter {
         }
         returnData(map);
         writeWeatherDataToLocal(map);
-        Toast.makeText(mContext, R.string.refresh_success, Toast.LENGTH_SHORT).show();
     }
 
     //返回数据
@@ -135,6 +132,7 @@ public class WeatherOverviewPresenter implements IPresenter {
         if (mOnResponseCallback != null) {
             if (result != null) {
                 if (result instanceof Map) {
+                    Toast.makeText(mContext, R.string.refresh_success, Toast.LENGTH_SHORT).show();
                     mOnResponseCallback.onResponseSuccess(result);
                 } else {
                     mOnResponseCallback.onResponseError(((Exception) result));

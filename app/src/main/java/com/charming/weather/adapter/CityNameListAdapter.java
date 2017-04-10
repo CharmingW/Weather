@@ -95,6 +95,6 @@ public class CityNameListAdapter extends BaseAdapter {
     }
 
     public interface onDeleteCityCallback {
-        public void onDeleteCitySuccess(String cityName);
+        void onDeleteCitySuccess(String cityName);
     }
 }

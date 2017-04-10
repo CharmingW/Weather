@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.ArraySet;
@@ -73,8 +74,12 @@ public class AddCityActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (!mAdapter.isEditing()) {
+                    SharedPreferences spf = getSharedPreferences("location_city", MODE_PRIVATE);
+                    SharedPreferences.Editor  editor = spf.edit();
+                    editor.putString("city", mAdapter.getData().get(position) + "市");
+                    SharedPreferencesCompat.EditorCompat editorCompat = SharedPreferencesCompat.EditorCompat.getInstance();
+                    editorCompat.apply(editor);
                     Intent addCity = new Intent(AddCityActivity.this, WeatherOverviewActivity.class);
-                    addCity.putExtra("city_name", mAdapter.getData().get(position));
                     setResult(RESULT_OK, addCity);
                     finish();
                 }
@@ -174,30 +179,6 @@ public class AddCityActivity extends AppCompatActivity implements View.OnClickLi
 
     //显示添加城市对话框
     private void displayAddCityDialog() {
-        //创建builder
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-//                .setMessage("message").setTitle("标题")
-//                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                    }
-//                })
-//                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                    }
-//                });
-////创建AlertDialog
-//        AlertDialog alertDialog = builder.create();
-////获取Diloag所在的Window
-//        Window window = alertDialog.getWindow();
-////为Window设置动画
-//        window.setWindowAnimations(R.style.dialogWindowAnim);
-////显示Dialog
-//        alertDialog.show();
-
 
         final EditText et = new EditText(this);
         et.setHint("中文名/拼音，如广州/Guangzhou");
@@ -229,8 +210,13 @@ public class AddCityActivity extends AppCompatActivity implements View.OnClickLi
                             }
                             mEditor.apply();
 
+                            SharedPreferences spf = getSharedPreferences("location_city", MODE_PRIVATE);
+                            SharedPreferences.Editor  editor = spf.edit();
+                            editor.putString("city", cityName + "市");
+                            SharedPreferencesCompat.EditorCompat editorCompat = SharedPreferencesCompat.EditorCompat.getInstance();
+                            editorCompat.apply(editor);
+
                             Intent addCity = new Intent(AddCityActivity.this, WeatherOverviewActivity.class);
-                            addCity.putExtra("city_name", cityName);
                             setResult(RESULT_OK, addCity);
                             finish();
                         }

@@ -58,7 +58,7 @@ import java.util.Map;
 
 public class WeatherOverviewActivity
         extends AppCompatActivity
-        implements View.OnClickListener {
+        implements View.OnClickListener{
 
     private static final String TAG = "WeatherOverviewActivity";
     private static final String DEGREE = "°";
@@ -66,6 +66,7 @@ public class WeatherOverviewActivity
 
     private Handler mHandler = new Handler();
     private WeatherOverviewPresenter mPresenter;
+    private String locationDescription;
 
     public static Map<String, Object> getWeatherData() {
         return mWeatherData;
@@ -77,34 +78,46 @@ public class WeatherOverviewActivity
         public void onReceiveLocation(BDLocation bdLocation) {
             mLocationClient.stop();
             int locType = bdLocation.getLocType();
+            String city;
+            SharedPreferences spf = getSharedPreferences("location_city", MODE_PRIVATE);
+            final SharedPreferences.Editor editor = spf.edit();
             if (locType == BDLocation.TypeGpsLocation
-                    || locType == BDLocation.TypeNetWorkLocation) {
-                String city = bdLocation.getCity();
-                SharedPreferences spf = getSharedPreferences("location_city", MODE_PRIVATE);
+                    || locType == BDLocation.TypeNetWorkLocation
+                    || locType == BDLocation.TypeOffLineLocation
+                    || locType == BDLocation.TypeCacheLocation) {
+                city = bdLocation.getCity();
                 String oldCity = spf.getString("city", null);
                 Log.i(TAG, "onReceiveLocation: " + city);
-                final List<Poi> list = bdLocation.getPoiList();
-                if (list != null) {
-                    mHandler.post(new Runnable() {
+                List<Poi> list = bdLocation.getPoiList();
+                locationDescription = list.get(0).getName();
+                if (oldCity != null && oldCity.equals(city)) {
+                    runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             TextView location
-                                    = (TextView) WeatherOverviewActivity.this.findViewById(R.id.specific_location);
-                            location.setText(list.get(0).getName());
+                                    = (TextView) findViewById(R.id.specific_location);
+                            location.setText(locationDescription);
                         }
                     });
-                }
-                if (oldCity != null && oldCity.equals(city)) {
                     return;
                 }
-
-                SharedPreferences.Editor editor = spf.edit().putString("city", city);
+                editor.putString("city", city);
                 SharedPreferencesCompat.EditorCompat editorCompat = SharedPreferencesCompat.EditorCompat.getInstance();
                 editorCompat.apply(editor);
-
-               mPresenter.startPresent();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPresenter.startPresent();
+                    }
+                });
             } else {
-                Toast.makeText(WeatherOverviewActivity.this, "定位失败，注意是否开启了定位权限", Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(WeatherOverviewActivity.this, "定位失败", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
             }
         }
 
@@ -118,7 +131,12 @@ public class WeatherOverviewActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPresenter = new WeatherOverviewPresenter(getApplicationContext());
+        startLocation();
+    }
+
+    private void startLocation() {
         mLocationClient = new LocationClient(getApplicationContext());
+
         initLocation();
         initPresenter();
 
@@ -126,6 +144,13 @@ public class WeatherOverviewActivity
         String city = spf.getString("city", null);
 
         if (city == null) {
+
+            SharedPreferences.Editor editor = spf.edit();
+            editor.putString("city", "广州");
+            SharedPreferencesCompat.EditorCompat editorCompat
+                    = SharedPreferencesCompat.EditorCompat.getInstance();
+            editorCompat.apply(editor);
+            mPresenter.startPresent();
             //开始定位
             mLocationClient.start();
         } else {
@@ -135,19 +160,17 @@ public class WeatherOverviewActivity
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                   mLocationClient.start();
+                    mLocationClient.start();
                 }
             }, 2000);
         }
     }
 
-
-
     private void initLocation() {
 
         LocationClientOption option = new LocationClientOption();
 
-        option.setLocationMode(LocationClientOption.LocationMode.Battery_Saving);
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         //可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
 
         option.setCoorType("bd09ll");
@@ -185,11 +208,11 @@ public class WeatherOverviewActivity
     }
 
 
-
-
     private void init() {
 
         setContentView(R.layout.activity_weather_overview);
+
+        setupTitleLocation();
 
         //设置刷新动作
         setRefreshAction();
@@ -210,6 +233,12 @@ public class WeatherOverviewActivity
         setNewsList();
     }
 
+    private void setupTitleLocation() {
+        TextView location
+                = (TextView) findViewById(R.id.specific_location);
+        location.setText(locationDescription);
+    }
+
     private void setOnClickListenerForView() {
         findViewById(R.id.weather_tendency_entrance).setOnClickListener(this);
         findViewById(R.id.air_quality_details_entrance).setOnClickListener(this);
@@ -226,8 +255,11 @@ public class WeatherOverviewActivity
             @Override
             public void onResponseError(Exception e) {
                 Log.i(TAG, "onResponseError: " + e.getMessage());
-                Toast.makeText(WeatherOverviewActivity.this, R.string.no_data_text, Toast.LENGTH_SHORT).show();
+                Toast.makeText(WeatherOverviewActivity.this,
+                        R.string.no_data_text,
+                        Toast.LENGTH_SHORT).show();
                 setContentView(R.layout.news_error_refresh);
+
                 findViewById(R.id.error_refresh).setOnClickListener(WeatherOverviewActivity.this);
             }
         });

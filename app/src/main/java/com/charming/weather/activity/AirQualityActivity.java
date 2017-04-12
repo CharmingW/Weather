@@ -1,7 +1,6 @@
 package com.charming.weather.activity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AirQualityActivity extends AppCompatActivity implements View.OnClickListener {
+public class AirQualityActivity extends BaseSwipeBackActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

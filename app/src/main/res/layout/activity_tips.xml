@@ -37,6 +37,6 @@
             android:layout_height="70.0dip"
             android:layout_gravity="end"
             android:layout_marginTop="@dimen/common_m_spacing"
-            app:srcCompat="@drawable/ic_comfortable" />
+            android:src="@drawable/ic_comfortable" />
     </LinearLayout>
 </LinearLayout>

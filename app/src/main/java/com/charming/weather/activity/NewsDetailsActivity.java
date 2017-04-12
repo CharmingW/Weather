@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +24,7 @@ import android.widget.ProgressBar;
 import com.charming.weather.R;
 import com.charming.weather.util.ApplicationUtil;
 
-public class NewsDetailsActivity extends AppCompatActivity implements View.OnClickListener {
+public class NewsDetailsActivity extends BaseSwipeBackActivity implements View.OnClickListener {
     private static final String TAG = "NewsDetailsActivity";
     private PopupMenu mPopupMenu;
     private ProgressBar mProgressBar;

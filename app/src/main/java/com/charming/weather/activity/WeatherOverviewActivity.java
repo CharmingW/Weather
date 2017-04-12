@@ -1,16 +1,16 @@
 package com.charming.weather.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.SharedPreferencesCompat;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -57,7 +57,7 @@ import java.util.List;
 import java.util.Map;
 
 public class WeatherOverviewActivity
-        extends AppCompatActivity
+        extends Activity
         implements View.OnClickListener{
 
     private static final String TAG = "WeatherOverviewActivity";
@@ -363,32 +363,27 @@ public class WeatherOverviewActivity
     @Override
     protected void onResume() {
         super.onResume();
+        mLocationClient.registerLocationListener(mLocationListener);
         if (!NetworkUtil.checkNetworkStatus(this)) {
             Toast.makeText(this, getString(R.string.no_network_text), Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        mLocationClient.registerLocationListener(mLocationListener);
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.activity_weather_overview);
-        if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
-            drawerLayout.closeDrawer(GravityCompat.END);
-        }
         mLocationClient.unRegisterLocationListener(mLocationListener);
         if (mLocationClient.isStarted()) {
             mLocationClient.stop();
+        }
+        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.activity_weather_overview);
+        if (drawerLayout.isDrawerOpen(Gravity.END)) {
+            drawerLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    drawerLayout.closeDrawer(Gravity.END);
+                }
+            }, 500);
         }
     }
 
@@ -399,10 +394,10 @@ public class WeatherOverviewActivity
         switch (view.getId()) {
             //菜单事件
             case R.id.btn_menu:
-                ((DrawerLayout) findViewById(R.id.activity_weather_overview)).openDrawer(GravityCompat.END);
+                ((DrawerLayout) findViewById(R.id.activity_weather_overview)).openDrawer(Gravity.END);
                 break;
             case R.id.close:
-                ((DrawerLayout) findViewById(R.id.activity_weather_overview)).closeDrawer(GravityCompat.END);
+                ((DrawerLayout) findViewById(R.id.activity_weather_overview)).closeDrawer(Gravity.END);
                 break;
             case R.id.add_or_delete:
                 intent = new Intent(WeatherOverviewActivity.this, AddCityActivity.class);
@@ -533,14 +528,14 @@ public class WeatherOverviewActivity
             if (requestCode == 1) {
                 mPresenter.startPresent();
             }
-        }
+    }
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_weather_overview);
-        if (drawer.isDrawerOpen(GravityCompat.END)) {
-            drawer.closeDrawer(GravityCompat.END);
+        if (drawer.isDrawerOpen(Gravity.END)) {
+            drawer.closeDrawer(Gravity.END);
         } else {
             super.onBackPressed();
         }

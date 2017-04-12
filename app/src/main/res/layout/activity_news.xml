@@ -38,7 +38,7 @@
                     android:layout_width="@dimen/menu_icon_size"
                     android:layout_height="@dimen/menu_icon_size"
                     android:layout_gravity="center"
-                    app:srcCompat="@drawable/ic_back_white" />
+                    android:src="@drawable/ic_back_white" />
             </FrameLayout>
 
             <TextView

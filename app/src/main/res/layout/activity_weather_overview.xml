@@ -519,24 +519,4 @@
         android:clipToPadding="false"
         android:background="@android:color/transparent"/>
 
-    <!--<FrameLayout-->
-        <!--android:id="@+id/activity_welcome"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="@drawable/welcome"-->
-        <!--tools:context="com.charming.weather.activity.WelcomeActivity">-->
-
-        <!--<com.charming.weather.ui.LedTextView-->
-            <!--android:gravity="center"-->
-            <!--android:background="@drawable/skip_bg"-->
-            <!--android:id="@+id/welcome_image"-->
-            <!--android:layout_width="50dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:src="@drawable/welcome"-->
-            <!--android:textColor="@android:color/white"-->
-            <!--android:textSize="@dimen/xxl_text_size"/>-->
-
-    <!--</FrameLayout>-->
-
 </android.support.v4.widget.DrawerLayout>

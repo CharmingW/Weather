@@ -3,7 +3,6 @@ package com.charming.weather.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 import com.charming.weather.R;
 import com.charming.weather.util.ApplicationUtil;
 
-public class TipsActivity extends AppCompatActivity {
+public class TipsActivity extends BaseSwipeBackActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

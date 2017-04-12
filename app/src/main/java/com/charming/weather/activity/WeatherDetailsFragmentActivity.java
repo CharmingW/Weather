@@ -2,7 +2,6 @@ package com.charming.weather.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.View;
@@ -17,7 +16,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class WeatherDetailsFragmentActivity extends FragmentActivity {
+public class WeatherDetailsFragmentActivity extends BaseSwipeBackActivity {
 
     private int mLastPage, mCurrentPage;
     private ViewPager mViewPager;

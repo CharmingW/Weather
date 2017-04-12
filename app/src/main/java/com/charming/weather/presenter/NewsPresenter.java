@@ -33,11 +33,11 @@ import java.util.Map;
 
 public class NewsPresenter implements IPresenter {
     private static final String TAG = "NewsPresenter";
+    private final String DATA_TAG = "news_data";
     private String mUrl;
     private Context mContext;
     private NewsGsonParser mDataParser;
     private OnResponseCallback mOnResponseCallback;
-    private final String DATA_TAG = "news_data";
 
     public void setChannel(String channel) {
         mUrl = "http://v.juhe.cn/toutiao/index?key=6b88d59b03a95861f8b2a9938738d625&type=" + channel;

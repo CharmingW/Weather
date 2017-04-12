@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.ArraySet;
 import android.view.Gravity;
 import android.view.View;
@@ -30,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class AddCityActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddCityActivity extends BaseSwipeBackActivity implements View.OnClickListener {
 
     private CityNameListAdapter mAdapter;
     private SharedPreferences mSp;

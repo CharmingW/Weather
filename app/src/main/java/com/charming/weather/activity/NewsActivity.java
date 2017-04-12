@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
@@ -32,7 +31,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class NewsActivity extends AppCompatActivity implements View.OnClickListener {
+public class NewsActivity extends BaseSwipeBackActivity implements View.OnClickListener {
     private static final String TAG = "NewsActivity";
     String[] mChannels;
     String[] mChannelsEn;

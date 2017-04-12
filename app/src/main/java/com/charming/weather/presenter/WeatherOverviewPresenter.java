@@ -35,7 +35,6 @@ import java.util.Map;
 
 public class WeatherOverviewPresenter implements IPresenter {
 
-    private static final String API_KEY = "c58b256f3b2c3b79dad4320888b8e5e3";
     private String httpUrl;
     private final String DATA_TAG = "weather_data";
     private static final String TAG = "WeatherPresenter";
@@ -103,7 +102,7 @@ public class WeatherOverviewPresenter implements IPresenter {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("apikey", API_KEY);
+                headers.put("apikey", "c58b256f3b2c3b79dad4320888b8e5e3");
                 return headers;
             }
         };

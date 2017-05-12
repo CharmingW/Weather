@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:paddingBottom="@dimen/common_m_spacing"
-             android:paddingTop="@dimen/common_m_spacing">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/common_m_spacing"
+    android:paddingTop="@dimen/common_m_spacing">
 
     <TextView
         android:id="@+id/city_name"
@@ -20,6 +19,6 @@
         android:layout_width="@dimen/menu_icon_size"
         android:layout_height="@dimen/menu_icon_size"
         android:layout_gravity="end"
-        app:srcCompat="@drawable/ic_delete"/>
+        android:src="@drawable/ic_delete" />
 
 </FrameLayout>

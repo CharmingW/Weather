@@ -87,7 +87,6 @@ public class WeatherOverviewActivity
                     || locType == BDLocation.TypeCacheLocation) {
                 city = bdLocation.getCity();
                 String oldCity = spf.getString("city", null);
-                Log.i(TAG, "onReceiveLocation: " + city);
                 List<Poi> list = bdLocation.getPoiList();
                 locationDescription = list.get(0).getName();
                 if (oldCity != null && oldCity.equals(city)) {

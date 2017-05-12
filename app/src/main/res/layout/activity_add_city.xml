@@ -5,12 +5,11 @@
               android:orientation="vertical">
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                 android:id="@+id/title_bar"
-                 android:layout_width="match_parent"
-                 android:layout_height="@dimen/multi_title_status_bar_height"
-                 android:background="@color/lighter_gray"
-                 android:paddingTop="@dimen/status_bar_height">
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/multi_title_status_bar_height"
+        android:background="@color/lighter_gray"
+        android:paddingTop="@dimen/status_bar_height">
 
 
         <LinearLayout

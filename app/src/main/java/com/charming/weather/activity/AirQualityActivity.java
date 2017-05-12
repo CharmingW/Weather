@@ -2,6 +2,7 @@ package com.charming.weather.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.charming.weather.R;
@@ -23,6 +24,7 @@ public class AirQualityActivity extends BaseSwipeBackActivity implements View.On
         setContentView(R.layout.activity_air_quality);
         ApplicationUtil.setMiuiStatusBarDarkMode(this, true);
         init();
+        initShare();
     }
 
     private void init() {
@@ -46,6 +48,16 @@ public class AirQualityActivity extends BaseSwipeBackActivity implements View.On
         aqv.setData(aqvData);
 
         findViewById(R.id.btn_share).setOnClickListener(this);
+    }
+
+    private void initShare() {
+        final View rootView = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
+        findViewById(R.id.btn_share).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ApplicationUtil.shareWeatherIcon(rootView);
+            }
+        });
     }
 
     @Override
